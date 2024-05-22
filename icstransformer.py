@@ -73,8 +73,17 @@ def makeScheduleObj(room, date, events, mac):
     return envelope 
 
 def uploadJson(obj):
+    session = requests.Session()
+
+    credentials = { # test credentials for public consumption (in secure sandbox)
+        "user": "test",
+        "password": "sesame"
+    }
+    x = session.post("http://localhost:8000/api/login", json=credentials)
+    print(x.text)
+
     url = "http://localhost:8000/api/upload-schedule"
-    x = requests.post(url=url, json=obj)
+    x = session.post(url=url, json=obj)
     print(x.text)
 
 def main():
@@ -85,7 +94,7 @@ def main():
     events = filterByDate(allevents, today.year, today.month, today.day)
     printEvents(events)
 
-    events = filterByDate(allevents, 2024, 3, 8)
+    events = filterByDate(allevents, 2024, 3, 11)
     printEvents(events)
 
     room = "Raum 237"
